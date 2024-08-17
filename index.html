@@ -6,7 +6,150 @@
     <title>MCREATIONS - Início</title>
     <link rel="icon" href="images/favicon.png" type="image/png">
     <style>
-        /* Adicione o CSS aqui */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 2000px; /* Para demonstrar o scroll */
+            background-color: black;
+            color: white;
+        }
+
+        header {
+            background-color: #eeeeee;
+            padding: 0;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: top 0.3s;
+        }
+
+        .header-image {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+        }
+
+        .nav-links {
+            display: inline-block;
+        }
+
+        .nav-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .search-container input {
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-container button {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            padding-top: 60px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 40px 0;
+            color: white;
+        }
+
+        p {
+            color: white;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .search-results {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-results h2 {
+            margin: 0 0 10px 0;
+            color: white;
+        }
+
+        .search-results .result-item {
+            margin-bottom: 10px;
+        }
+
+        .search-results .result-item a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .search-results .result-item a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -21,8 +164,8 @@
             </div>
         </nav>
         <div class="search-container">
-            <input type="text" placeholder="Buscar...">
-            <button type="submit">🔍</button>
+            <input type="text" id="searchInput" placeholder="Buscar...">
+            <button onclick="performSearch()">🔍</button>
         </div>
     </header>
 
@@ -32,7 +175,6 @@
 
         <hr>
 
-        <!-- Adiciona os botões -->
         <div class="buttons">
             <a href="wiki.html" class="button">Wiki</a>
             <a href="historia.html" class="button">História</a>
@@ -40,8 +182,43 @@
         </div>
     </div>
 
+    <div class="search-results" id="searchResults" style="display: none;"></div>
+
     <script>
-        // Código do script
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = ''; // Limpa os resultados existentes
+
+            if (query) {
+                const pages = [
+                    { url: 'index.html', title: 'Início', content: 'Olá! Nós somos a MCREATIONS.' },
+                    { url: 'historia.html', title: 'História', content: 'Em meados de 2020, Mateus Anghinoni...' },
+                    { url: 'wiki.html', title: 'Wiki', content: 'Bem-vindo à Wiki da MCREATIONS.' },
+                    { url: 'jogos.html', title: 'Jogos', content: 'Jogos da MCREATIONS.' }
+                ];
+
+                let results = pages.filter(page => page.content.toLowerCase().includes(query));
+
+                if (results.length > 0) {
+                    resultsContainer.style.display = 'block';
+                    resultsContainer.innerHTML = '<h2>Resultados da Busca:</h2>';
+                    results.forEach(result => {
+                        resultsContainer.innerHTML += `
+                            <div class="result-item">
+                                <a href="${result.url}">${result.title}</a>
+                                <p>${result.content.substring(0, 100)}...</p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    resultsContainer.style.display = 'block';
+                    resultsContainer.innerHTML = '<h2>Nenhum resultado encontrado</h2>';
+                }
+            } else {
+                resultsContainer.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
